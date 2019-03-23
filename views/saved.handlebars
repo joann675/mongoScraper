@@ -1,0 +1,49 @@
+<div class="container">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+		<a class="navbar-brand" href="/">MongoScraper</a>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/saved">Saved Articles</a>
+				</li>
+
+			</ul>
+			<button class="scrape" type="button">Scrape New Articles</button>
+			<button class="clear" type="button">Clear Articles</button>
+		</div>
+	</nav>
+
+
+
+	<div class="jumbotron text-center">
+		<h1>Saved Articles</h1>
+		<h2>Your Saved Articles</h2>
+	</div>
+
+
+
+	{{#each articles}}
+
+	<div class="card">
+		<div class="card-header">
+			<h5>
+				<a class="article-link" target="_blank" rel="noopener noreferrer" href={{link}}>{{headline}}</a>
+
+				<button class="addNote" attrId ={{_id}}>Notes </a>
+				<button class="delete" attrId ={{_id}}>Delete</a>
+			</h5>
+
+		</div>
+		<div class="card-body">
+			<p class="card-text">{{summary}}</p>
+
+		</div>
+	</div>
+
+
+	{{/each}}
+
+	</div>
