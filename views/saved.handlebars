@@ -12,7 +12,7 @@
 
 			</ul>
 			<button class="scrape" type="button">Scrape New Articles</button>
-			<button class="clear" type="button">Clear Articles</button>
+			
 		</div>
 	</nav>
 
@@ -22,6 +22,36 @@
 		<h1>Saved Articles</h1>
 		<h2>Your Saved Articles</h2>
 	</div>
+	
+		<div class="modal" id="myModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body" id="dbNotes">
+					</div>
+					<h4>New Note</h4>
+					<div class="modal-body" id="newNote">
+                    <form role ="form">
+                      <div class="form-group">
+                        <input type="text" class="form-control" id="title" name="title" placeholder="Enter title here">
+						<textarea name="textarea" rows="3" cols="62" id="body"></textarea>
+						
+                      </div>
+                    </form>
+                  </div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary saveNote">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	
 
 
 
@@ -32,8 +62,8 @@
 			<h5>
 				<a class="article-link" target="_blank" rel="noopener noreferrer" href={{link}}>{{headline}}</a>
 
-				<button class="addNote" attrId ={{_id}}>Notes </a>
-				<button class="delete" attrId ={{_id}}>Delete</a>
+				<button class="addNote" attrId={{_id}}>Notes </a>
+					<button class="delete" attrId={{_id}}>Delete</a>
 			</h5>
 
 		</div>
@@ -46,4 +76,7 @@
 
 	{{/each}}
 
-	</div>
+
+
+
+</div>
