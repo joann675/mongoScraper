@@ -6,10 +6,10 @@ var Schema = mongoose.Schema;
 // Using the Schema constructor, create a new UserSchema object
 // This is similar to a Sequelize model
 var ArticleSchema = new Schema({
-  // `title` is required and of type String
+  // `headline` is required and of type String. It must be unique
   headline: {
     type: String,
-    unique: true,
+    index: {unique: true, dropDups: true},
     required: true
   },
   summary: {
@@ -27,7 +27,7 @@ var ArticleSchema = new Schema({
   },
 
 
-  // `note` is an object that stores a Note id
+  // `notes` is an array that stores Note ids
   // The ref property links the ObjectId to the Note model
   // This allows us to populate the Article with an associated Note
   notes: [

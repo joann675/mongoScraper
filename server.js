@@ -14,8 +14,6 @@ var PORT = process.env.PORT || 3000;
 // Initialize Express
 var app = express();
 
-
-
 // Use morgan logger for logging requests
 app.use(logger("dev"));
 // Parse request body as JSON
@@ -23,8 +21,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
-
-
 
 
 // Set Handlebars.
@@ -38,8 +34,6 @@ app.set("view engine", "handlebars");
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/news";
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
-
-
 
 
 // Main route
@@ -64,13 +58,9 @@ app.get("/", function (req, res) {
 });
 
 
-
-
-
-
 // Retrieve saved articles from the db
 app.get("/saved", function (req, res) {
-  // Find all results from the scrapedData collection in the db
+  // Find all results from the articles collection in the db where saved = true
   db.Article.find({ saved: true })
     .then(function (dbArticle) {
       // If all articles are successfully found, send them back to the client
@@ -89,7 +79,7 @@ app.get("/saved", function (req, res) {
 
 // Scrape data from one site and place it into the mongodb db
 app.get("/scrape", function (req, res) {
-  // Make a request via axios for the news section of `ycombinator`
+  // Make a request via axios to the huffington post`
   axios.get("https://www.huffpost.com/").then(function (response) {
     // Load the html body from axios into cheerio
     var $ = cheerio.load(response.data);
@@ -137,7 +127,7 @@ app.put("/save/:id", function (req, res) {
 
 
     .then(function (dbArticle) {
-      // View the added result in the console
+      // View the updated result in the console
       console.log(dbArticle);
       res.send("Successfully saved");
     })
@@ -157,14 +147,14 @@ app.put("/delsave/:id", function (req, res) {
 
 
     .then(function (dbArticle) {
-      // View the added result in the console
+      // View the updated result in the console
       console.log(dbArticle);
-      res.send("Successfully saved");
+      res.send("Successfully unsaved");
     })
     .catch(function (err) {
       // If an error occurred, log it
       console.log(err);
-      res.send("Error occurred saving article");
+      res.send("Error occurred unsaving article");
     });
 
 });
@@ -175,7 +165,7 @@ app.post("/articles/:id", function (req, res) {
   db.Note.create(req.body)
     .then(function (dbNote) {
       // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
+      // { new: true } tells the query that we want it to return the updated Article -- it returns the original by default
       // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
       return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { notes: dbNote._id } }, { new: true });
 
@@ -193,12 +183,10 @@ app.post("/articles/:id", function (req, res) {
 
 // Remove a note from an article
 app.post("/delarticles/:id/:noteId", function (req, res) {
-  // Create a new note and pass the req.body to the entry
+  // Delete note and pass the req.body to the entry
   db.Note.findByIdAndDelete(req.params.noteId)
     .then(function (dbNote) {
-      // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
+      
       return db.Article.findOneAndUpdate({ _id: req.params.id }, { $pull: { notes: dbNote._id } }, { new: true });
 
     })
